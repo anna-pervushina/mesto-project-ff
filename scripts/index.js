@@ -8,19 +8,21 @@
 
 // @todo: Вывести карточки на страницу
 
-import { initialCards } from './cards.js';
-
 // Функция создания карточки
 function createCard(data, handleDelete) {
   const cardTemplate = document.querySelector('#card-template').content.cloneNode(true);
   
   // Устанавливаем имя и изображение карточки
   cardTemplate.querySelector('.card__title').textContent = data.name;
-  cardTemplate.querySelector('.card__image').src = data.imageLink;
+  cardTemplate.querySelector('.card__image').src = data.link;
+  cardTemplate.querySelector('.card__image').alt = data.alt;
 
   // Добавляем обработчик клика на кнопку удаления
-  cardTemplate.querySelector('.card__delete-button').addEventListener('click', (event) => {
-    handleDelete(event.currentTarget.parentElement); // Передаем родительский элемент карточки
+  cardTemplate.querySelector('.card__delete-button').addEventListener('click', function(event) {
+    const handleDelete = event.target.closest('.card'); 
+    if (handleDelete) {
+      deleteCard(handleDelete);
+    }
   });
 
   return cardTemplate;
@@ -30,6 +32,8 @@ function createCard(data, handleDelete) {
 function deleteCard(cardElement) {
   cardElement.remove();
 }
+
+
 
 // Функция добавления карточек на страницу
 function renderCards(cardsArray, container, handleDelete) {
@@ -41,22 +45,9 @@ function renderCards(cardsArray, container, handleDelete) {
 
 // Выводим все карточки на страницу
 document.addEventListener('DOMContentLoaded', function() {
-  const placesList = document.querySelector('.places__list');
+  const cardsContainer = document.querySelector('.places__list');
   const addButton = document.querySelector('.profile__add-button');
 
-  // Обработчик события клика на кнопку добавления
-  addButton.addEventListener('click', () => {
-    const newCardData = {
-      name: prompt("Название"), // запрашиваем название у пользователя
-      imageLink: prompt("Ссылка на картинку")
-    };
-    
-    if (newCardData.name && newCardData.imageLink) {
-      const newCard = createCard(newCardData, deleteCard);
-      placesList.prepend(newCard); // добавляем новую карточку в начало списка
-    }
-  });
-
   // Отображаем существующие карточки
-  renderCards(initialCards, placesList, deleteCard);
+  renderCards(initialCards, cardsContainer, deleteCard);
 });
