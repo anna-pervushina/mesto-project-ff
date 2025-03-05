@@ -9,7 +9,7 @@
 // @todo: Вывести карточки на страницу
 
 // Функция создания карточки
-function createCard(data, handleDelete) {
+function createCard(data, cardElement) {
   const cardTemplate = document.querySelector('#card-template').content.cloneNode(true);
   
   // Устанавливаем имя и изображение карточки
@@ -19,9 +19,9 @@ function createCard(data, handleDelete) {
 
   // Добавляем обработчик клика на кнопку удаления
   cardTemplate.querySelector('.card__delete-button').addEventListener('click', function(event) {
-    const handleDelete = event.target.closest('.card'); 
-    if (handleDelete) {
-      deleteCard(handleDelete);
+    const cardElement = event.target.closest('.card'); 
+    if (cardElement) {
+      deleteCard(cardElement);
     }
   });
 
@@ -33,21 +33,16 @@ function deleteCard(cardElement) {
   cardElement.remove();
 }
 
-
-
 // Функция добавления карточек на страницу
-function renderCards(cardsArray, container, handleDelete) {
+function renderCards(cardsArray, container, cardElement) {
   cardsArray.forEach((cardData) => {
-    const newCard = createCard(cardData, handleDelete);
+    const newCard = createCard(cardData, cardElement);
     container.appendChild(newCard);
   });
 }
 
 // Выводим все карточки на страницу
-document.addEventListener('DOMContentLoaded', function() {
-  const cardsContainer = document.querySelector('.places__list');
-  const addButton = document.querySelector('.profile__add-button');
+const cardsContainer = document.querySelector('.places__list');
 
-  // Отображаем существующие карточки
-  renderCards(initialCards, cardsContainer, deleteCard);
-});
+// Отображаем существующие карточки
+  renderCards(initialCards, cardsContainer, deleteCard); 
