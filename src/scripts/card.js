@@ -8,7 +8,7 @@ export function createCard(cardData, handleDelete, handleClickOnImage, handleLik
 
   cardTemplate.querySelector(".card__delete-button").addEventListener("click", handleDelete);
   cardTemplate.querySelector(".card__image").addEventListener("click", handleClickOnImage);
-  cardTemplate.querySelector('.card__like-button').addEventListener('click', handleLike);
+  cardTemplate.querySelector(".card__like-button").addEventListener("click", handleLike);
 
   return cardTemplate;
 }
@@ -21,8 +21,6 @@ export function deleteCard(event) {
 
 // Функция лайка
 export function handleLike(event) {
-  const target = event.target.closest('.card__like-button');
-  if (target) {
-    target.classList.toggle('card__like-button_is-active');
-  }
+  const likeButton = event.target;
+  likeButton.classList.toggle("card__like-button_is-active");
 }
