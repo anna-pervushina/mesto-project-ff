@@ -25,3 +25,24 @@
     line-height: 17px;
   }
 }
+
+/* Стиль для неактивной кнопки */
+.popup__button:disabled {
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.2); 
+  color: rgba(0, 0, 0, 0.2);
+  cursor: default; 
+}
+
+/* Стиль для активной кнопки */
+.popup__button:not(:disabled) {
+  background-color: #000; 
+  border: none;
+  color: #fff; 
+  cursor: pointer; 
+}
+
+.popup__button.loading {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

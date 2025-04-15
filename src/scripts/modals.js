@@ -1,4 +1,3 @@
-// Функция открытия попапа
 export function openPopup(popupElement) {
   popupElement.classList.add("popup_is-animated");
   addKeydownHandler();
@@ -7,7 +6,6 @@ export function openPopup(popupElement) {
   }, 60);
 }
 
-// Функция закрытия попапа
 export function closePopup(popupElement) {
   popupElement.classList.remove("popup_is-opened");
   removeKeydownHandler();
@@ -16,7 +14,6 @@ export function closePopup(popupElement) {
   }, 60);
 }
 
-// Закрытие попапа при клике на оверлей
 export function initOverlayClick(popup) {
   popup.addEventListener("click", (event) => {
       if (!event.target.closest(".popup__content")) {
@@ -25,7 +22,6 @@ export function initOverlayClick(popup) {
   });
 }
 
-// Закрытие попапа по Escape
 export function addKeydownHandler() {
   window.addEventListener("keydown", handleKeydown);
 }
