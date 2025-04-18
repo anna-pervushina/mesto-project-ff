@@ -131,3 +131,22 @@ export const deleteCardById = (cardId) => {
     return null;
   });
 };
+
+// Функция для обновления аватара пользователя
+export function updateAvatar(avatarLink) {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: config.headers,
+      body: JSON.stringify({ avatar: avatarLink })
+  })
+  .then(res => {
+      if (!res.ok) {
+          throw new Error(`Ошибка HTTP: ${res.status}`);
+      }
+      return res.json();
+  })
+  .catch(err => {
+      console.error('Ошибка при обновлении аватара:', err.message);
+      return null;
+  });
+}

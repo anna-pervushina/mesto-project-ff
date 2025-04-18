@@ -61,16 +61,26 @@ export function handleLike(cardId) {
 
   if (likeButton.classList.contains("card__like-button_is-active")) {
     removeLike(cardId)
-      .then(() => {
-        likeButton.classList.remove("card__like-button_is-active");
-        likeCountElement.textContent = Math.max(parseInt(likeCountElement.textContent) - 1, 0);
+      .then(response => {
+        if (response && response.likes) {
+          const updatedLikes = response.likes;
+          likeButton.classList.remove("card__like-button_is-active");
+          likeCountElement.textContent = updatedLikes.length.toString();
+        } else {
+          console.error('Полученный ответ от сервера не содержит необходимых данных:', response);
+        }
       })
       .catch(console.error);
   } else {
     putLike(cardId)
-      .then(() => {
-        likeButton.classList.add("card__like-button_is-active");
-        likeCountElement.textContent = parseInt(likeCountElement.textContent) + 1;
+      .then(response => {
+        if (response && response.likes) {
+          const updatedLikes = response.likes;
+          likeButton.classList.add("card__like-button_is-active");
+          likeCountElement.textContent = updatedLikes.length.toString();
+        } else {
+          console.error('Полученный ответ от сервера не содержит необходимых данных:', response);
+        }
       })
       .catch(console.error);
   }

@@ -2,7 +2,18 @@ import "../pages/index.css";
 import { createCard, deleteCard, handleLike } from "./card.js";
 import { openPopup, closePopup, initOverlayClick } from "./modals.js";
 import { enableValidation } from './validation.js';
-import { getUserInfo, getInitialCards, postNewCard, patchUserInfo } from './api.js';
+import { getUserInfo, getInitialCards, postNewCard, patchUserInfo, updateAvatar } from './api.js';
+
+// Настройки валидации
+const validationSettings = {
+    formClass: '.popup__form',
+    inputClass: '.popup__input',
+    submitButtonClass: '.popup__button',
+    inactiveButtonClass: 'popup__button_disabled',
+    inputErrorClass: 'invalid',
+    errorClass: 'error-message',
+    errorElementClass: '.popup__input-error',
+};
 
 // Вспомогательные функции для отображения процесса загрузки
 function showLoading(button, loadingText) {
@@ -191,8 +202,42 @@ function openCardPopup(event) {
     openPopup(imagePreviewPopup);
 }
 
+// Обработчик формы изменения аватара
+const avatarForm = document.querySelector('.popup__form[name="change-avatar"]');
+
+function handleAvatarFormSubmit(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const avatarLink = form.elements["avatar-link"].value;
+
+    const saveButton = form.querySelector('.popup__button');
+    const originalText = saveButton.textContent;
+
+    showLoading(saveButton, 'Сохранение...');
+
+    updateAvatar(avatarLink)
+        .then(response => {
+            if (response && response.avatar) {
+                profileAvatar.style.backgroundImage = `url(${response.avatar})`;
+                closePopup(avatarPopup);
+                hideLoading(saveButton, originalText);
+            } else {
+                console.error('Полученный ответ от сервера не содержит необходимых данных:', response);
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при обновлении аватара:', error.message);
+            hideLoading(saveButton, originalText);
+        });
+}
+
+if (avatarForm) {
+    avatarForm.addEventListener('submit', handleAvatarFormSubmit);
+}
+
 // Инициализация валидации и приложения
 window.onload = () => {
-    enableValidation();   // Активируем новую систему валидации
+    enableValidation(validationSettings);   // Активируем новую систему валидации
     initializeApp();       // Начинаем приложение
 };
